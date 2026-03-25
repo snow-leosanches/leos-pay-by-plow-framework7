@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/snowplow/snowplow-cli/refs/heads/main/internal/validation/schema/source-application.json
+
+apiVersion: v1
+resourceType: source-application
+resourceName: 83619e16-2dd7-4f2f-a227-fab5a87b13aa
+data:
+    name: Leo's Pay by Plow
+    description: A toy application to demonstrate microloans instrumentation.
+    owner: leonel.sanches@snowplowanalytics.com
+    appIds:
+        - leos-pay-by-plow
+    entities:
+        tracked: []
+        enriched: []

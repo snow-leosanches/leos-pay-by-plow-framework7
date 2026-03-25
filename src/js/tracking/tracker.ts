@@ -8,7 +8,7 @@ import {
 } from '@snowplow/browser-tracker';
 import type { SelfDescribingJson } from '@snowplow/browser-tracker';
 
-const TRACKER_NS = 'pbp';
+export const TRACKER_NS = 'pbp';
 
 const collector =
   import.meta.env.VITE_SNOWPLOW_COLLECTOR || 'http://localhost:9090';
@@ -30,7 +30,7 @@ export function initTracker(): void {
 }
 
 export function trackPageView(title?: string): void {
-  spTrackPageView({ title });
+  spTrackPageView({ title }, [TRACKER_NS]);
 }
 
 export function trackEvent(
@@ -38,10 +38,13 @@ export function trackEvent(
   data: Record<string, unknown>,
   context?: SelfDescribingJson[]
 ): void {
-  trackSelfDescribingEvent({
-    event: { schema, data },
-    context,
-  });
+  trackSelfDescribingEvent(
+    {
+      event: { schema, data },
+      context,
+    },
+    [TRACKER_NS]
+  );
 }
 
 export function setSnowplowUserId(userId: string | null): void {

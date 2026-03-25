@@ -20,6 +20,13 @@ import {
 const PAYMENT_WEEKS = [12, 24, 36, 48] as const;
 const DEFAULT_WEEKS = 12;
 
+/** `step_name` values for `credit_application_step_completed` (data-structures/credit_application_step_completed.yaml). */
+const CREDIT_APP_STEP = {
+  identification: 'customer_identification',
+  financing: 'financing_calculator',
+  confirmation: 'confirmation_review',
+} as const;
+
 type IncomeBracket = 'under_500' | '500_1000' | '1000_2000' | 'over_2000';
 
 function escapeHtml(s: string): string {
@@ -222,7 +229,7 @@ export function bindApplyPage(
 
     trackCreditApplicationStarted(device.id, 'customer_identification', trackCtx(device));
     trackCustomerIdentificationSpec({ email, phone });
-    trackCreditApplicationStepCompleted(1, 'customer_identification', trackCtx(device));
+    trackCreditApplicationStepCompleted(1, CREDIT_APP_STEP.identification, trackCtx(device));
 
     fillDeviceStep(device);
     showStep(2);
@@ -230,7 +237,7 @@ export function bindApplyPage(
 
   el.querySelector<HTMLButtonElement>('#apply-step2-next')!.onclick = () => {
     trackFinancingCalculatorUsed(device.id, selectedWeeks, financedTotalUsd(device.priceUsd), trackCtx(device));
-    trackCreditApplicationStepCompleted(2, 'financing_calculator', trackCtx(device));
+    trackCreditApplicationStepCompleted(2, CREDIT_APP_STEP.financing, trackCtx(device));
     fillConfirm(device);
     showStep(3);
   };
@@ -251,7 +258,7 @@ export function bindApplyPage(
     }
 
     const requested = financedTotalUsd(device.priceUsd);
-    trackCreditApplicationStepCompleted(3, 'confirmation_review', trackCtx(device));
+    trackCreditApplicationStepCompleted(3, CREDIT_APP_STEP.confirmation, trackCtx(device));
     trackCreditApplicationSubmitted(device.id, requested, income, trackCtx(device));
 
     store.dispatch('recordCreditApplication', {

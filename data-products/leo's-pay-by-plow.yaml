@@ -1,78 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/snowplow/snowplow-cli/refs/heads/main/internal/validation/schema/data-product.json
+
 apiVersion: v1
 resourceType: data-product
 resourceName: 97bcedb4-b7da-401c-8b6d-1fa89829c8ad
 data:
     name: Leo's Pay by Plow
     sourceApplications:
-        - $ref: ../data-products/source-apps/leo's-pay-by-plow-web-app.yaml
+        - $ref: ./source-apps/leo's-pay-by-plow.yaml
     eventSpecifications:
-        - resourceName: 915f78c6-8054-463f-a728-9f80817f4893
-          name: customer_identification
-          event:
-              source: iglu:com.leospaybyplow/customer_identification/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
-        - resourceName: a56b84a7-3e20-4622-82af-0cbc06179469
-          name: device_viewed
-          event:
-              source: iglu:com.leospaybyplow/device_viewed/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
         - resourceName: 015dc7d6-cba5-440f-8387-5e021e8e3624
           name: financing_calculator_used
           event:
-              source: iglu:com.leospaybyplow/financing_calculator_used/jsonschema/1-0-0
+            source: iglu:com.leospaybyplow/financing_calculator_used/jsonschema/1-0-0
           entities:
-              tracked: []
-              enriched: []
-        - resourceName: d105dd67-7df8-47fe-834b-6f998c23924a
-          name: credit_application_started
-          event:
-              source: iglu:com.leospaybyplow/credit_application_started/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
-        - resourceName: 5db3c34e-8d90-4732-837b-e9f333497c97
-          name: credit_application_step_completed
-          event:
-              source: iglu:com.leospaybyplow/credit_application_step_completed/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
-        - resourceName: fbeb2eb4-013a-4457-8c25-221d211fc9e8
-          name: credit_application_submitted
-          event:
-              source: iglu:com.leospaybyplow/credit_application_submitted/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
-        - resourceName: c108b1f5-cce4-410e-b0f2-81ab22428f5b
-          name: credit_decision_viewed
-          event:
-              source: iglu:com.leospaybyplow/credit_decision_viewed/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
-        - resourceName: 6055b5de-5c85-4c79-82af-87056579bcf0
-          name: payment_initiated
-          event:
-              source: iglu:com.leospaybyplow/payment_initiated/jsonschema/1-0-0
-          entities:
-              tracked: []
-              enriched: []
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/device_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
         - resourceName: 5bfe5401-1f8c-48e3-8eee-3921f2a32ec2
           name: payment_completed
           event:
-              source: iglu:com.leospaybyplow/payment_completed/jsonschema/1-0-0
+            source: iglu:com.leospaybyplow/payment_completed/jsonschema/1-0-0
           entities:
-              tracked: []
-              enriched: []
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/loan_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: 5db3c34e-8d90-4732-837b-e9f333497c97
+          name: credit_application_step_completed
+          event:
+            source: iglu:com.leospaybyplow/credit_application_step_completed/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/device_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: 6055b5de-5c85-4c79-82af-87056579bcf0
+          name: payment_initiated
+          event:
+            source: iglu:com.leospaybyplow/payment_initiated/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/loan_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: 915f78c6-8054-463f-a728-9f80817f4893
+          name: customer_identification
+          event:
+            source: iglu:com.leospaybyplow/customer_identification/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: a56b84a7-3e20-4622-82af-0cbc06179469
+          name: device_viewed
+          event:
+            source: iglu:com.leospaybyplow/device_viewed/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/device_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: c108b1f5-cce4-410e-b0f2-81ab22428f5b
+          name: credit_decision_viewed
+          event:
+            source: iglu:com.leospaybyplow/credit_decision_viewed/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/device_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
         - resourceName: c5fc596a-ef49-43f0-8370-cdc099a413d1
           name: device_lock_simulated
           event:
-              source: iglu:com.leospaybyplow/device_lock_simulated/jsonschema/1-0-0
+            source: iglu:com.leospaybyplow/device_lock_simulated/jsonschema/1-0-0
           entities:
-              tracked: []
-              enriched: []
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/loan_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: d105dd67-7df8-47fe-834b-6f998c23924a
+          name: credit_application_started
+          event:
+            source: iglu:com.leospaybyplow/credit_application_started/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/device_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []
+        - resourceName: fbeb2eb4-013a-4457-8c25-221d211fc9e8
+          name: credit_application_submitted
+          event:
+            source: iglu:com.leospaybyplow/credit_application_submitted/jsonschema/1-0-0
+          entities:
+            tracked:
+                - source: iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0
+                  minCardinality: 1
+                - source: iglu:com.leospaybyplow/device_context/jsonschema/1-0-0
+                  minCardinality: 1
+            enriched: []

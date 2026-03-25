@@ -3,7 +3,9 @@
   "dataStructures": [],
   "repositories": [],
   "eventSpecificationIds": [],
-  "dataProductIds": [],
+  "dataProductIds": [
+    "97bcedb4-b7da-401c-8b6d-1fa89829c8ad"
+  ],
   "organizationId": "b12539df-a711-42bd-bdfa-175308c55fd5",
   "tracker": "@snowplow/browser-tracker",
   "language": "typescript",
