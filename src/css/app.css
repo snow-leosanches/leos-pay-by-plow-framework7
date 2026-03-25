@@ -1,0 +1,901 @@
+:root {
+  --f7-theme-color: #00c853;
+  --f7-theme-color-rgb: 0, 200, 83;
+  --f7-theme-color-shade: #00a844;
+  --f7-theme-color-tint: #33d375;
+
+  --pbp-bg: #0f0f1a;
+  --pbp-surface: #1a1a2e;
+  --pbp-card: #16213e;
+  --pbp-amber: #FFB300;
+  --pbp-text-muted: #8888aa;
+}
+
+/* Force dark background */
+html, body, #app {
+  background-color: var(--pbp-bg);
+  height: 100%;
+}
+
+.view-main {
+  background-color: var(--pbp-bg);
+}
+
+/* Card overrides */
+.card {
+  background-color: var(--pbp-card) !important;
+  border-radius: 16px !important;
+}
+
+/* Navbar */
+.navbar {
+  --f7-navbar-bg-color: var(--pbp-surface);
+  --f7-navbar-text-color: #ffffff;
+  background-color: var(--pbp-surface) !important;
+}
+
+.navbar .navbar-bg {
+  opacity: 1 !important;
+  background: var(--pbp-surface) !important;
+}
+
+#app .navbar .navbar-inner .title {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+  opacity: 1 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  line-height: 1.25;
+  position: relative;
+  z-index: 2;
+}
+
+/* Home: brand + wide nav — keep title readable and not squeezed under links */
+.page[data-name="home"] .navbar .navbar-inner {
+  align-items: center;
+  flex-wrap: nowrap;
+  min-height: 52px;
+}
+
+.page[data-name="home"] .navbar .navbar-inner .title {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+  padding-left: max(8px, env(safe-area-inset-left));
+  padding-right: 10px;
+  font-size: 16px;
+  overflow: visible;
+  white-space: normal;
+  display: block;
+  max-width: min(48vw, 260px);
+}
+
+@media (min-width: 700px) {
+  .page[data-name="home"] .navbar .navbar-inner .title {
+    max-width: min(40vw, 320px);
+  }
+}
+
+.page[data-name="home"] .navbar .navbar-inner .right {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Device PDP: long model names must stay legible (navbar + hero) */
+.page[data-name="device-detail"] .navbar .navbar-inner .title,
+.page[data-name="device-detail"] #device-detail-title {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  max-width: min(78vw, 320px);
+  white-space: normal;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 15px;
+  text-align: center;
+}
+
+.page[data-name="device-detail"] .navbar {
+  --f7-navbar-bg-color: var(--pbp-surface);
+  background-color: var(--pbp-surface) !important;
+}
+
+.pbp-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px 14px;
+  padding: 4px 0;
+  max-width: min(100vw - 120px, 640px);
+}
+
+.pbp-nav .link {
+  color: var(--pbp-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pbp-nav .link.pbp-nav-active {
+  color: var(--f7-theme-color);
+  font-weight: 600;
+}
+
+.pbp-nav .link:not(.pbp-nav-active):hover {
+  color: #c8c8dd;
+}
+
+/* Auth nav: Framework7 / theme can override [hidden]; force hide */
+.pbp-nav .link.pbp-nav-item-hidden {
+  display: none !important;
+}
+
+/* /phones/ — PayJoy phone-finance–style mock */
+.pbp-phones-page {
+  padding-bottom: 48px;
+}
+
+/* /cash/ — PayJoy cash / credit line–style mock */
+.pbp-cash-page {
+  padding-bottom: 48px;
+}
+
+.pbp-login-page {
+  padding-bottom: 48px;
+}
+
+.login-known-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-known-grid .button {
+  white-space: normal;
+  height: auto;
+  min-height: 44px;
+  line-height: 1.35;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.login-known-grid .pbp-known-email {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-top: 6px;
+}
+
+.pbp-phone-hero {
+  padding: 40px 16px 32px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 200, 83, 0.12) 0%,
+    rgba(15, 15, 26, 0.55) 55%,
+    rgba(15, 15, 26, 0.2) 100%
+  );
+  border-radius: 0 0 20px 20px;
+}
+
+.pbp-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--f7-theme-color);
+  margin: 0 0 8px;
+}
+
+.pbp-phone-hero-title {
+  font-size: clamp(1.625rem, 4.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 12px;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.03em;
+}
+
+.pbp-phone-hero-sub {
+  font-size: 17px;
+  margin: 0;
+  color: #d8d8e8 !important;
+}
+
+.pbp-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #fff;
+}
+
+.pbp-step-icon {
+  color: var(--f7-theme-color);
+  font-size: 28px;
+}
+
+.pbp-brand-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pbp-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--pbp-card);
+  color: #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pbp-checklist {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--pbp-text-muted);
+  line-height: 1.6;
+}
+
+.pbp-checklist li {
+  margin-bottom: 8px;
+}
+
+.pbp-accent {
+  color: var(--f7-theme-color);
+}
+
+.pbp-collateral-card {
+  border-left: 3px solid var(--f7-theme-color);
+}
+
+/*
+ * Full-width scroll so the scrollbar stays on the viewport edge.
+ * (max-width + margin auto on .page-content made the scrollable box narrow/centered,
+ * so the scrollbar appeared beside the column — “in the middle” on wide screens.)
+ */
+.page-content {
+  max-width: none;
+  box-sizing: border-box;
+  padding-left: max(16px, calc(50vw - 480px));
+  padding-right: max(16px, calc(50vw - 480px));
+}
+
+/* Device catalog grid */
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
+}
+
+@media (min-width: 600px) {
+  .device-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .device-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.device-card {
+  display: block;
+  background: var(--pbp-card);
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.device-card:active {
+  transform: scale(0.97);
+}
+
+.device-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #222240;
+  padding: 8px;
+}
+
+.device-card .device-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.device-card .device-weekly {
+  font-size: 12px;
+  color: var(--f7-theme-color);
+  margin-top: 2px;
+}
+
+.device-card .device-price {
+  font-size: 11px;
+  color: var(--pbp-text-muted);
+}
+
+/* Credit badge */
+.credit-badge {
+  display: inline-block;
+  background: var(--f7-theme-color);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* Amber CTA button */
+.button-amber {
+  background-color: var(--pbp-amber) !important;
+  color: #000 !important;
+}
+
+/* Muted text */
+.text-muted {
+  color: var(--pbp-text-muted);
+  font-size: 13px;
+}
+
+/* /device/:id/ — carrier PDP–style mock (Simple Mobile–inspired) */
+.pbp-device-detail {
+  padding-bottom: 32px;
+}
+
+.pbp-breadcrumb {
+  font-size: 12px;
+  color: var(--pbp-text-muted);
+  padding: 12px 16px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.pbp-breadcrumb a {
+  color: var(--f7-theme-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pbp-breadcrumb-sep {
+  opacity: 0.5;
+  user-select: none;
+}
+
+.pbp-breadcrumb-current {
+  color: #e8e8f4;
+  max-width: 100%;
+  line-height: 1.35;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.pbp-device-hero-panel {
+  padding: 8px 16px 20px;
+  text-align: center;
+}
+
+.pbp-device-image-wrap {
+  background: linear-gradient(180deg, #1e1e36 0%, #12121f 100%);
+  border-radius: 20px;
+  padding: 24px 16px;
+  margin-bottom: 16px;
+}
+
+.pbp-device-image-wrap img {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+.pbp-device-promo {
+  display: inline-block;
+  background: var(--f7-theme-color);
+  color: #0a0a0f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  border-radius: 6px;
+  margin: 0 0 12px;
+}
+
+.pbp-device-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pbp-device-retail {
+  font-size: 13px;
+  color: var(--pbp-text-muted);
+  margin: 0;
+}
+
+.pbp-device-highlights {
+  list-style: none;
+  margin: 0 16px 8px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--pbp-card);
+}
+
+.pbp-device-highlights li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pbp-device-highlights li:last-child {
+  border-bottom: none;
+}
+
+.pbp-hl-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--f7-theme-color);
+}
+
+.pbp-hl-value {
+  font-size: 13px;
+  color: #e4e4ef;
+  line-height: 1.4;
+}
+
+.pbp-device-desc-wrap {
+  max-height: 4.5em;
+  overflow: hidden;
+  position: relative;
+}
+
+.pbp-device-desc-wrap.pbp-device-desc-expanded {
+  max-height: none;
+}
+
+.pbp-device-desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #c4c4d8;
+  margin: 0;
+}
+
+.pbp-device-desc-toggle {
+  margin-top: 8px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--f7-theme-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pbp-segmented {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px 12px;
+}
+
+.pbp-segmented .pbp-seg {
+  flex: 1;
+  margin: 0;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 44px;
+  background: var(--pbp-card);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--pbp-text-muted);
+}
+
+.pbp-segmented .pbp-seg.pbp-seg-active {
+  background: rgba(0, 200, 83, 0.18);
+  border-color: var(--f7-theme-color);
+  color: #e8ffe8;
+}
+
+.pbp-finance-weeks-wrap {
+  padding-top: 0 !important;
+}
+
+.pbp-week-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pbp-week-chips .button {
+  margin: 0;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 36px;
+  padding: 0 14px;
+  background: var(--pbp-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--pbp-text-muted);
+}
+
+.pbp-week-chips .button.pbp-week-active {
+  background: rgba(0, 200, 83, 0.2);
+  border-color: var(--f7-theme-color);
+  color: #fff;
+}
+
+.pbp-payment-summary {
+  font-size: 14px;
+  color: #dfe0f0;
+  margin: 14px 0 0;
+  line-height: 1.45;
+}
+
+.pbp-payment-summary strong {
+  color: var(--f7-theme-color);
+  font-weight: 700;
+}
+
+.pbp-device-disclaimer {
+  font-size: 11px;
+  line-height: 1.45;
+  padding: 0 16px 8px;
+  margin: 0;
+}
+
+.pbp-accessory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 0 16px 16px;
+}
+
+@media (min-width: 600px) {
+  .pbp-accessory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pbp-accessory-card {
+  background: var(--pbp-card);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pbp-accessory-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e8e8f4;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.pbp-accessory-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--f7-theme-color);
+}
+
+.pbp-device-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 16px 24px;
+}
+
+.pbp-device-cta .button {
+  margin: 0;
+}
+
+/* /apply/ — phone application wizard */
+.pbp-apply-page {
+  padding-bottom: 32px;
+}
+
+.pbp-apply-progress {
+  padding: 12px 16px 8px;
+}
+
+.pbp-apply-progress-label {
+  font-size: 12px;
+  color: var(--pbp-text-muted);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.pbp-apply-progress-label strong {
+  color: var(--f7-theme-color);
+}
+
+.pbp-apply-progress-bar {
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.pbp-apply-progress-fill {
+  display: block;
+  height: 100%;
+  width: 33.33%;
+  background: linear-gradient(90deg, var(--f7-theme-color), var(--f7-theme-color-tint));
+  border-radius: 4px;
+  transition: width 0.2s ease;
+}
+
+.pbp-apply-step {
+  padding: 0 16px 24px;
+}
+
+.pbp-apply-step .button {
+  margin-top: 8px;
+}
+
+.pbp-apply-device-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: var(--pbp-card);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pbp-apply-device-card img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #222240;
+  flex-shrink: 0;
+}
+
+.pbp-apply-device-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f0f0f7;
+}
+
+.pbp-apply-week-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pbp-apply-week-chips .button {
+  margin: 0;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 40px;
+  padding: 0 14px;
+  background: var(--pbp-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--pbp-text-muted);
+}
+
+.pbp-apply-week-chips .button.pbp-apply-week-active {
+  background: rgba(0, 200, 83, 0.2);
+  border-color: var(--f7-theme-color);
+  color: #fff;
+}
+
+.pbp-apply-calc-summary {
+  font-size: 14px;
+  color: #dfe0f0;
+  margin: 14px 0 0;
+  line-height: 1.45;
+}
+
+.pbp-apply-calc-summary strong {
+  color: var(--f7-theme-color);
+}
+
+.pbp-apply-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pbp-apply-actions .button {
+  margin: 0;
+}
+
+#apply-income {
+  width: 100%;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--pbp-surface);
+  color: #f0f0f7;
+}
+
+/* /thank-you/ */
+.pbp-thank-you-page {
+  padding-bottom: 48px;
+}
+
+/* /profile/ */
+.pbp-profile-page {
+  padding-bottom: 48px;
+}
+
+.pbp-profile-logout-wrap {
+  padding: 24px 16px 8px;
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+.pbp-profile-logout-wrap .button {
+  margin: 0;
+  width: 100%;
+}
+
+.pbp-profile-card {
+  padding: 16px !important;
+  margin: 0 16px 8px;
+}
+
+.pbp-profile-account-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 14px;
+}
+
+.pbp-profile-account-row:last-child {
+  border-bottom: none;
+}
+
+.pbp-profile-label {
+  color: var(--pbp-text-muted);
+  flex-shrink: 0;
+}
+
+.pbp-profile-value {
+  color: #e8e8f4;
+  text-align: right;
+  word-break: break-word;
+}
+
+.pbp-profile-mono {
+  font-size: 12px;
+  font-family: ui-monospace, monospace;
+}
+
+.pbp-profile-device-img-wrap {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.pbp-profile-device-img {
+  width: 140px;
+  height: auto;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #222240;
+  padding: 8px;
+}
+
+.pbp-profile-detail-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.pbp-profile-status {
+  font-size: 13px;
+  color: var(--pbp-text-muted);
+  margin: 0 0 14px;
+}
+
+.pbp-profile-detail-grid {
+  display: grid;
+  gap: 0;
+}
+
+.pbp-profile-detail-grid > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+}
+
+.pbp-profile-history {
+  padding: 0 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pbp-profile-history-item {
+  padding: 14px !important;
+  margin: 0 !important;
+}
+
+.pbp-profile-history-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.pbp-profile-history-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #222240;
+  flex-shrink: 0;
+}
+
+.pbp-profile-history-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.pbp-profile-history-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.pbp-profile-history-device {
+  font-weight: 600;
+  font-size: 15px;
+  color: #f0f0f7;
+}
+
+.pbp-profile-history-date {
+  font-size: 11px;
+  color: var(--pbp-text-muted);
+  white-space: nowrap;
+}
+
+.pbp-profile-history-meta {
+  font-size: 12px;
+  color: var(--pbp-text-muted);
+  line-height: 1.4;
+}

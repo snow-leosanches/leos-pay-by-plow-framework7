@@ -1,0 +1,107 @@
+<div class="page" data-name="apply">
+  <div class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner">
+      <div class="left">
+        <a href="#" class="link back"><i class="f7-icons">chevron_left</i></a>
+      </div>
+      <div class="title">Apply for a phone</div>
+    </div>
+  </div>
+
+  <div class="page-content pbp-apply-page">
+    <!--
+      Flow maps to data-structures/*.yaml:
+      - customer_identification + credit_application_started (step 1)
+      - financing_calculator_used + credit_application_step_completed (step 2)
+      - credit_application_submitted (step 3 confirm)
+    -->
+    <div id="apply-no-device" class="block text-align-center" style="display: none; padding-top: 32px;">
+      <p class="text-muted">Pick a phone first, then apply.</p>
+      <a href="/catalog/" class="button button-fill button-large" style="margin-top: 16px;">Browse catalog</a>
+    </div>
+
+    <div id="apply-flow" style="display: none;">
+      <div class="pbp-apply-progress">
+        <span class="pbp-apply-progress-label">Step <strong id="apply-step-num">1</strong> of 3</span>
+        <div class="pbp-apply-progress-bar" aria-hidden="true">
+          <span class="pbp-apply-progress-fill" id="apply-progress-fill"></span>
+        </div>
+      </div>
+
+      <div id="apply-step-1" class="pbp-apply-step">
+        <div class="block-title">Customer identification</div>
+        <p class="text-muted" style="margin-top: 0;">We’ll use this to match your application to your account.</p>
+        <div class="list inset">
+          <ul>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Email</div>
+                <div class="item-input-wrap">
+                  <input type="email" id="apply-email" placeholder="you@example.com" autocomplete="email" />
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Phone</div>
+                <div class="item-input-wrap">
+                  <input type="tel" id="apply-phone" placeholder="+52 …" autocomplete="tel" />
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button type="button" class="button button-fill button-large" id="apply-step1-next">Continue</button>
+      </div>
+
+      <div id="apply-step-2" class="pbp-apply-step" style="display: none;">
+        <div class="block-title">Financing calculator</div>
+        <div class="pbp-apply-device-card">
+          <img id="apply-device-img" src="" alt="" width="120" height="120" loading="lazy" />
+          <div>
+            <div class="pbp-apply-device-name" id="apply-device-name"></div>
+            <div class="text-muted" id="apply-device-retail"></div>
+          </div>
+        </div>
+        <p class="text-muted" style="font-size: 13px;">Choose how many weekly payments (12–48 weeks).</p>
+        <div class="pbp-apply-week-chips" id="apply-week-chips" role="radiogroup" aria-label="Payment length in weeks"></div>
+        <p class="pbp-apply-calc-summary" id="apply-calc-summary"></p>
+        <div class="pbp-apply-actions">
+          <button type="button" class="button button-fill button-large" id="apply-step2-next">Continue</button>
+          <button type="button" class="button button-outline" id="apply-step2-back">Back</button>
+        </div>
+      </div>
+
+      <div id="apply-step-3" class="pbp-apply-step" style="display: none;">
+        <div class="block-title">Confirm your choices</div>
+        <div class="card" id="apply-confirm-card" style="padding: 16px;"></div>
+        <div class="block-title">Approximate monthly income</div>
+        <div class="list inset">
+          <ul>
+            <li class="item-content item-input item-input-with-value">
+              <div class="item-inner">
+                <div class="item-input-wrap input-dropdown-wrap">
+                  <select id="apply-income" class="input-with-value">
+                    <option value="" disabled selected>Select a range</option>
+                    <option value="under_500">Under $500</option>
+                    <option value="500_1000">$500 – $999</option>
+                    <option value="1000_2000">$1,000 – $1,999</option>
+                    <option value="over_2000">$2,000 or more</option>
+                  </select>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <p class="text-muted" style="font-size: 11px; line-height: 1.45;">
+          By confirming, you agree this is a demo application. No real credit check is performed.
+        </p>
+        <div class="pbp-apply-actions">
+          <button type="button" class="button button-fill button-large" id="apply-submit">Apply for Phone now</button>
+          <button type="button" class="button button-outline" id="apply-step3-back">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

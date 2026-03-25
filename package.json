@@ -1,0 +1,22 @@
+{
+  "name": "leos-pay-by-plow",
+  "version": "0.1.0",
+  "description": "Snowplow tracking demo — fintech PWA built with Framework7",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.4.0",
+    "@snowplow/browser-tracker": "^4.0.0",
+    "framework7": "^9.0.2",
+    "framework7-icons": "^4.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vite": "^6.0.0",
+    "vite-plugin-pwa": "^0.21.0"
+  }
+}

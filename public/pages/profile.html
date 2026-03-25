@@ -1,0 +1,41 @@
+<div class="page" data-name="profile">
+  <div class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner">
+      <div class="title">Profile</div>
+      <div class="right">
+        <div class="pbp-nav">
+          <a href="/" class="link">Home</a>
+          <a href="/phones/" class="link">Phones</a>
+          <a href="/cash/" class="link">Cash</a>
+          <a href="/login/" class="link pbp-nav-login">Login</a>
+          <a href="/profile/" class="link pbp-nav-active pbp-nav-profile">Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content pbp-profile-page">
+    <div id="profile-logged-out" class="block text-align-center" style="display: none; padding-top: 40px;">
+      <p class="text-muted">Sign in to see your account and application history.</p>
+      <a href="/login/" class="button button-fill button-large" style="margin-top: 16px;">Log in</a>
+    </div>
+
+    <div id="profile-logged-in" style="display: none;">
+      <div class="block-title">Your account</div>
+      <div id="profile-account-card" class="card pbp-profile-card"></div>
+
+      <div class="block-title">Latest application</div>
+      <div id="profile-latest-app" class="card pbp-profile-card"></div>
+
+      <div class="block-title">Application history</div>
+      <div id="profile-history-list" class="pbp-profile-history"></div>
+
+      <div class="pbp-profile-logout-wrap">
+        <button type="button" class="button button-large button-outline" id="profile-logout">
+          Log out
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

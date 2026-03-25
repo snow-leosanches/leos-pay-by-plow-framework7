@@ -1,0 +1,10 @@
+apiVersion: v1
+resourceType: source-application
+resourceName: 83619e16-2dd7-4f2f-a227-fab5a87b13aa
+data:
+    name: Leo's Pay by Plow Web App
+    appIds:
+        - leos-pay-by-plow
+    entities:
+        tracked: []
+        enriched: []

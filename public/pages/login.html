@@ -1,0 +1,59 @@
+<div class="page" data-name="login">
+  <div class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner">
+      <div class="title">Login</div>
+      <div class="right">
+        <div class="pbp-nav">
+          <a href="/" class="link">Home</a>
+          <a href="/phones/" class="link">Phones</a>
+          <a href="/cash/" class="link">Cash</a>
+          <a href="/login/" class="link pbp-nav-active pbp-nav-login">Login</a>
+          <a href="/profile/" class="link pbp-nav-profile">Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content pbp-login-page">
+    <div class="block">
+      <h2 style="margin: 0 0 8px; font-size: 1.35rem;">Automatic login</h2>
+      <p class="text-muted">Who are you?</p>
+      <button type="button" class="button button-fill button-large" id="login-auto" style="margin-top: 12px;">
+        Who, who, who, who?
+      </button>
+    </div>
+
+    <div class="block">
+      <p class="text-muted" style="margin-bottom: 8px;">Reset Snowplow anonymous session (clears domain/session cookies and user id).</p>
+      <button type="button" class="button button-outline" id="login-reset-snowplow">Reset Snowplow session</button>
+    </div>
+
+    <div class="block">
+      <h2 style="margin: 0 0 8px; font-size: 1.35rem;">Manual login</h2>
+      <div class="list no-hairlines-md">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Email</div>
+              <div class="item-input-wrap">
+                <input id="login-manual-email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="button button-fill" id="login-manual" style="margin-top: 8px;">Manual login</button>
+    </div>
+
+    <div class="block">
+      <h2 style="margin: 0 0 8px; font-size: 1.35rem;">Known customer login</h2>
+      <p class="text-muted" style="margin-bottom: 12px;">Better Call Saul — demo personas.</p>
+      <div class="login-known-grid" id="login-known-grid"></div>
+    </div>
+
+    <p class="text-muted" style="padding: 20px 16px 0; font-size: 12px;">
+      Optional query: <code>/?returnUrl=/profile/</code> — add <code>returnUrl</code> to return somewhere after login.
+    </p>
+  </div>
+</div>
