@@ -95,7 +95,7 @@ export type CreditApplicationSubmitted = {
     requested_amount: number;
 }
 
-export type IncomeBracket = "under_500" | "over_2000";
+export type IncomeBracket = "under_500" | "5001000" | "10002000" | "over_2000";
 
 /**
  * Creates a Snowplow Event Specification entity.

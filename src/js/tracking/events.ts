@@ -11,7 +11,12 @@ import {
   trackPaymentCompletedSpec,
   trackPaymentInitiatedSpec,
 } from '../../../snowtype/snowplow';
-import type { IncomeBracket as SubmittedIncomeWire } from '../../../snowtype/snowplow';
+import type {
+  DeviceContext,
+  IncomeBracket as SubmittedIncomeWire,
+  LoanContext,
+  UserCreditProfile,
+} from '../../../snowtype/snowplow';
 
 /** UI / app storage values (select `value` and profile store). */
 export type AppIncomeBracket = 'under_500' | '500_1000' | '1000_2000' | 'over_2000';
@@ -41,7 +46,7 @@ export function userCreditProfileCtx(
   creditTier: 'new' | 'bronze' | 'silver' | 'gold',
   isNewToCredit: boolean,
   country: string
-): SelfDescribingJson {
+): SelfDescribingJson<UserCreditProfile> {
   return {
     schema: SCHEMAS.userCreditProfile,
     data: { customer_id: customerId, credit_tier: creditTier, is_new_to_credit: isNewToCredit, country },
@@ -54,7 +59,7 @@ export function deviceCtx(
   model: string,
   priceUsd: number,
   isFeatured: boolean
-): SelfDescribingJson {
+): SelfDescribingJson<DeviceContext> {
   return {
     schema: SCHEMAS.deviceContext,
     data: { device_id: deviceId, brand, model, price_usd: priceUsd, is_featured: isFeatured },
@@ -67,7 +72,7 @@ export function loanCtx(
   totalAmount: number,
   weeksTotal: number,
   weeksRemaining: number
-): SelfDescribingJson {
+): SelfDescribingJson<LoanContext> {
   return {
     schema: SCHEMAS.loanContext,
     data: { loan_id: loanId, device_id: deviceId, total_amount: totalAmount, weeks_total: weeksTotal, weeks_remaining: weeksRemaining },
@@ -81,7 +86,7 @@ export function trackDeviceViewed(
   brand: string,
   priceUsd: number,
   weeklyInstallment: number,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | DeviceContext>[]
 ): void {
   trackDeviceViewedSpec(
     {
@@ -99,7 +104,7 @@ export function trackFinancingCalculatorUsed(
   deviceId: string,
   weeksSelected: number,
   totalAmount: number,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | DeviceContext>[]
 ): void {
   trackFinancingCalculatorUsedSpec(
     {
@@ -115,7 +120,7 @@ export function trackFinancingCalculatorUsed(
 export function trackCreditApplicationStarted(
   deviceId: string,
   sourceScreen: string,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | DeviceContext>[]
 ): void {
   trackCreditApplicationStartedSpec(
     {
@@ -130,7 +135,7 @@ export function trackCreditApplicationStarted(
 export function trackCreditApplicationStepCompleted(
   stepNumber: number,
   stepName: string,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | DeviceContext>[]
 ): void {
   trackCreditApplicationStepCompletedSpec(
     {
@@ -146,7 +151,7 @@ export function trackCreditApplicationSubmitted(
   deviceId: string,
   requestedAmount: number,
   incomeBracket: AppIncomeBracket,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | DeviceContext>[]
 ): void {
   trackCreditApplicationSubmittedSpec(
     {
@@ -162,7 +167,7 @@ export function trackCreditApplicationSubmitted(
 export function trackCreditDecisionViewed(
   decision: 'approved' | 'needs_review',
   creditLimit: number,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | DeviceContext>[]
 ): void {
   trackCreditDecisionViewedSpec(
     {
@@ -178,7 +183,7 @@ export function trackPaymentInitiated(
   loanId: string,
   amount: number,
   method: 'oxxo' | 'bank_transfer',
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | LoanContext>[]
 ): void {
   trackPaymentInitiatedSpec(
     {
@@ -195,7 +200,7 @@ export function trackPaymentCompleted(
   loanId: string,
   amount: number,
   remainingBalance: number,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | LoanContext>[]
 ): void {
   trackPaymentCompletedSpec(
     {
@@ -211,7 +216,7 @@ export function trackPaymentCompleted(
 export function trackDeviceLockSimulated(
   loanId: string,
   daysOverdue: number,
-  ctx: SelfDescribingJson[]
+  ctx: SelfDescribingJson<UserCreditProfile | LoanContext>[]
 ): void {
   trackDeviceLockSimulatedSpec(
     {
