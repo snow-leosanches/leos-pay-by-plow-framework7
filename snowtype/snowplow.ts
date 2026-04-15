@@ -7,10 +7,35 @@ export type FinancingCalculatorUsed = {
     weeks_selected: number;
 }
 
+export type UserCreditProfile = {
+    country:          string;
+    credit_tier:      CreditTier;
+    customer_id:      string;
+    is_new_to_credit: boolean;
+}
+
+export type CreditTier = "new" | "bronze" | "silver" | "gold";
+
+export type DeviceContext = {
+    brand:       string;
+    device_id:   string;
+    is_featured: boolean;
+    model:       string;
+    price_usd:   number;
+}
+
 export type PaymentCompleted = {
     amount:            number;
     loan_id:           string;
     remaining_balance: number;
+}
+
+export type LoanContext = {
+    device_id:       string;
+    loan_id:         string;
+    total_amount:    number;
+    weeks_remaining: number;
+    weeks_total:     number;
 }
 
 export type CreditApplicationStepCompleted = {
@@ -26,9 +51,18 @@ export type PaymentInitiated = {
 
 export type Method = "oxxo" | "bank_transfer";
 
+/**
+ * Structure for events that identify a user, with their user pieces
+ */
 export type CustomerIdentification = {
-    email: string;
-    phone: string;
+    /**
+     * Customer's email address
+     */
+    email?: null | string;
+    /**
+     * The customer's phone
+     */
+    phone?: null | string;
 }
 
 export type DeviceViewed = {
@@ -61,20 +95,15 @@ export type CreditApplicationSubmitted = {
     requested_amount: number;
 }
 
-/** Wire values for Iglu `credit_application_submitted` (middle brackets omit underscores). */
-export type IncomeBracket =
-  | "under_500"
-  | "5001000"
-  | "10002000"
-  | "over_2000";
+export type IncomeBracket = "under_500" | "over_2000";
 
 /**
  * Creates a Snowplow Event Specification entity.
  */
-export function createEventSpecification(eventSpecification: Omit<EventSpecification, 'data_product_domain'> & Partial<Pick<EventSpecification, 'data_product_domain'>>){
+export function createEventSpecification(eventSpecification: EventSpecification){
     return {
         schema:
-            'iglu:com.snowplowanalytics.snowplow/event_specification/jsonschema/1-0-4',
+            'iglu:com.snowplowanalytics.snowplow/event_specification/jsonschema/1-0-3',
         data: eventSpecification,
     }
 }
@@ -84,11 +113,10 @@ export function createEventSpecification(eventSpecification: Omit<EventSpecifica
  */
 interface EventSpecification {
     id: string;
-    version: number;
     name: string;
     data_product_id: string;
     data_product_name: string;
-    data_product_domain?: string;
+    data_product_domain: string;
 }
 
 type ContextsOrTimestamp<T = any> = Omit<CommonEventProperties<T>, 'context'> & { context?: SelfDescribingJson<T>[] | null | undefined }
@@ -120,6 +148,60 @@ export function createFinancingCalculatorUsed(financingCalculatorUsed: Financing
     }
 }
 /**
+ * Track a Snowplow event for UserCreditProfile.
+ * 
+ */
+export function trackUserCreditProfile<T extends {} = any>(userCreditProfile: UserCreditProfile & ContextsOrTimestamp<T>, trackers?: string[]){
+    const { context, timestamp, ...data } = userCreditProfile;
+    const event: SelfDescribingJson = {
+        schema: 'iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0',
+        data
+    };
+
+    trackSelfDescribingEvent({
+        event,
+        context,
+        timestamp,
+    }, trackers);
+}
+
+/**
+ * Creates a Snowplow UserCreditProfile entity.
+ */
+export function createUserCreditProfile(userCreditProfile: UserCreditProfile){
+    return {
+        schema: 'iglu:com.leospaybyplow/user_credit_profile/jsonschema/1-0-0',
+        data: userCreditProfile
+    }
+}
+/**
+ * Track a Snowplow event for DeviceContext.
+ * 
+ */
+export function trackDeviceContext<T extends {} = any>(deviceContext: DeviceContext & ContextsOrTimestamp<T>, trackers?: string[]){
+    const { context, timestamp, ...data } = deviceContext;
+    const event: SelfDescribingJson = {
+        schema: 'iglu:com.leospaybyplow/device_context/jsonschema/1-0-0',
+        data
+    };
+
+    trackSelfDescribingEvent({
+        event,
+        context,
+        timestamp,
+    }, trackers);
+}
+
+/**
+ * Creates a Snowplow DeviceContext entity.
+ */
+export function createDeviceContext(deviceContext: DeviceContext){
+    return {
+        schema: 'iglu:com.leospaybyplow/device_context/jsonschema/1-0-0',
+        data: deviceContext
+    }
+}
+/**
  * Track a Snowplow event for PaymentCompleted.
  * 
  */
@@ -144,6 +226,33 @@ export function createPaymentCompleted(paymentCompleted: PaymentCompleted){
     return {
         schema: 'iglu:com.leospaybyplow/payment_completed/jsonschema/1-0-0',
         data: paymentCompleted
+    }
+}
+/**
+ * Track a Snowplow event for LoanContext.
+ * 
+ */
+export function trackLoanContext<T extends {} = any>(loanContext: LoanContext & ContextsOrTimestamp<T>, trackers?: string[]){
+    const { context, timestamp, ...data } = loanContext;
+    const event: SelfDescribingJson = {
+        schema: 'iglu:com.leospaybyplow/loan_context/jsonschema/1-0-0',
+        data
+    };
+
+    trackSelfDescribingEvent({
+        event,
+        context,
+        timestamp,
+    }, trackers);
+}
+
+/**
+ * Creates a Snowplow LoanContext entity.
+ */
+export function createLoanContext(loanContext: LoanContext){
+    return {
+        schema: 'iglu:com.leospaybyplow/loan_context/jsonschema/1-0-0',
+        data: loanContext
     }
 }
 /**
@@ -202,12 +311,12 @@ export function createPaymentInitiated(paymentInitiated: PaymentInitiated){
 }
 /**
  * Track a Snowplow event for CustomerIdentification.
- * 
+ * Structure for events that identify a user, with their user pieces
  */
 export function trackCustomerIdentification<T extends {} = any>(customerIdentification: CustomerIdentification & ContextsOrTimestamp<T>, trackers?: string[]){
     const { context, timestamp, ...data } = customerIdentification;
     const event: SelfDescribingJson = {
-        schema: 'iglu:com.leospaybyplow/customer_identification/jsonschema/1-0-0',
+        schema: 'iglu:com.leosenterprises/customer_identification/jsonschema/1-0-0',
         data
     };
 
@@ -223,7 +332,7 @@ export function trackCustomerIdentification<T extends {} = any>(customerIdentifi
  */
 export function createCustomerIdentification(customerIdentification: CustomerIdentification){
     return {
-        schema: 'iglu:com.leospaybyplow/customer_identification/jsonschema/1-0-0',
+        schema: 'iglu:com.leosenterprises/customer_identification/jsonschema/1-0-0',
         data: customerIdentification
     }
 }
@@ -367,13 +476,13 @@ export function createCreditApplicationSubmitted(creditApplicationSubmitted: Cre
  * Tracks a FinancingCalculatorUsed event specification.
  * ID: 015dc7d6-cba5-440f-8387-5e021e8e3624
  */
-export function trackFinancingCalculatorUsedSpec(financingCalculatorUsed: FinancingCalculatorUsed & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackFinancingCalculatorUsedSpec(financingCalculatorUsed: FinancingCalculatorUsed & ContextsOrTimestamp<UserCreditProfile | DeviceContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: '015dc7d6-cba5-440f-8387-5e021e8e3624',
-        version: 0,
         name: 'financing_calculator_used',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(financingCalculatorUsed.context)
@@ -385,19 +494,19 @@ export function trackFinancingCalculatorUsedSpec(financingCalculatorUsed: Financ
         context,
     };
 
-    trackFinancingCalculatorUsed<Record<string, unknown> | EventSpecification>(modifiedFinancingCalculatorUsed, trackers);
+    trackFinancingCalculatorUsed<UserCreditProfile | DeviceContext | EventSpecification>(modifiedFinancingCalculatorUsed, trackers);
 }
 /**
  * Tracks a PaymentCompleted event specification.
  * ID: 5bfe5401-1f8c-48e3-8eee-3921f2a32ec2
  */
-export function trackPaymentCompletedSpec(paymentCompleted: PaymentCompleted & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackPaymentCompletedSpec(paymentCompleted: PaymentCompleted & ContextsOrTimestamp<UserCreditProfile | LoanContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: '5bfe5401-1f8c-48e3-8eee-3921f2a32ec2',
-        version: 0,
         name: 'payment_completed',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(paymentCompleted.context)
@@ -409,19 +518,19 @@ export function trackPaymentCompletedSpec(paymentCompleted: PaymentCompleted & C
         context,
     };
 
-    trackPaymentCompleted<Record<string, unknown> | EventSpecification>(modifiedPaymentCompleted, trackers);
+    trackPaymentCompleted<UserCreditProfile | LoanContext | EventSpecification>(modifiedPaymentCompleted, trackers);
 }
 /**
  * Tracks a CreditApplicationStepCompleted event specification.
  * ID: 5db3c34e-8d90-4732-837b-e9f333497c97
  */
-export function trackCreditApplicationStepCompletedSpec(creditApplicationStepCompleted: CreditApplicationStepCompleted & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackCreditApplicationStepCompletedSpec(creditApplicationStepCompleted: CreditApplicationStepCompleted & ContextsOrTimestamp<UserCreditProfile | DeviceContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: '5db3c34e-8d90-4732-837b-e9f333497c97',
-        version: 0,
         name: 'credit_application_step_completed',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(creditApplicationStepCompleted.context)
@@ -433,19 +542,19 @@ export function trackCreditApplicationStepCompletedSpec(creditApplicationStepCom
         context,
     };
 
-    trackCreditApplicationStepCompleted<Record<string, unknown> | EventSpecification>(modifiedCreditApplicationStepCompleted, trackers);
+    trackCreditApplicationStepCompleted<UserCreditProfile | DeviceContext | EventSpecification>(modifiedCreditApplicationStepCompleted, trackers);
 }
 /**
  * Tracks a PaymentInitiated event specification.
  * ID: 6055b5de-5c85-4c79-82af-87056579bcf0
  */
-export function trackPaymentInitiatedSpec(paymentInitiated: PaymentInitiated & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackPaymentInitiatedSpec(paymentInitiated: PaymentInitiated & ContextsOrTimestamp<UserCreditProfile | LoanContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: '6055b5de-5c85-4c79-82af-87056579bcf0',
-        version: 0,
         name: 'payment_initiated',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(paymentInitiated.context)
@@ -457,19 +566,19 @@ export function trackPaymentInitiatedSpec(paymentInitiated: PaymentInitiated & C
         context,
     };
 
-    trackPaymentInitiated<Record<string, unknown> | EventSpecification>(modifiedPaymentInitiated, trackers);
+    trackPaymentInitiated<UserCreditProfile | LoanContext | EventSpecification>(modifiedPaymentInitiated, trackers);
 }
 /**
  * Tracks a CustomerIdentification event specification.
  * ID: 915f78c6-8054-463f-a728-9f80817f4893
  */
-export function trackCustomerIdentificationSpec(customerIdentification: CustomerIdentification & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackCustomerIdentificationSpec(customerIdentification: CustomerIdentification & ContextsOrTimestamp<UserCreditProfile>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: '915f78c6-8054-463f-a728-9f80817f4893',
-        version: 0,
         name: 'customer_identification',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(customerIdentification.context)
@@ -481,19 +590,19 @@ export function trackCustomerIdentificationSpec(customerIdentification: Customer
         context,
     };
 
-    trackCustomerIdentification<Record<string, unknown> | EventSpecification>(modifiedCustomerIdentification, trackers);
+    trackCustomerIdentification<UserCreditProfile | EventSpecification>(modifiedCustomerIdentification, trackers);
 }
 /**
  * Tracks a DeviceViewed event specification.
  * ID: a56b84a7-3e20-4622-82af-0cbc06179469
  */
-export function trackDeviceViewedSpec(deviceViewed: DeviceViewed & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackDeviceViewedSpec(deviceViewed: DeviceViewed & ContextsOrTimestamp<UserCreditProfile | DeviceContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: 'a56b84a7-3e20-4622-82af-0cbc06179469',
-        version: 0,
         name: 'device_viewed',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(deviceViewed.context)
@@ -505,19 +614,19 @@ export function trackDeviceViewedSpec(deviceViewed: DeviceViewed & ContextsOrTim
         context,
     };
 
-    trackDeviceViewed<Record<string, unknown> | EventSpecification>(modifiedDeviceViewed, trackers);
+    trackDeviceViewed<UserCreditProfile | DeviceContext | EventSpecification>(modifiedDeviceViewed, trackers);
 }
 /**
  * Tracks a CreditDecisionViewed event specification.
  * ID: c108b1f5-cce4-410e-b0f2-81ab22428f5b
  */
-export function trackCreditDecisionViewedSpec(creditDecisionViewed: CreditDecisionViewed & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackCreditDecisionViewedSpec(creditDecisionViewed: CreditDecisionViewed & ContextsOrTimestamp<UserCreditProfile | DeviceContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: 'c108b1f5-cce4-410e-b0f2-81ab22428f5b',
-        version: 0,
         name: 'credit_decision_viewed',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(creditDecisionViewed.context)
@@ -529,19 +638,19 @@ export function trackCreditDecisionViewedSpec(creditDecisionViewed: CreditDecisi
         context,
     };
 
-    trackCreditDecisionViewed<Record<string, unknown> | EventSpecification>(modifiedCreditDecisionViewed, trackers);
+    trackCreditDecisionViewed<UserCreditProfile | DeviceContext | EventSpecification>(modifiedCreditDecisionViewed, trackers);
 }
 /**
  * Tracks a DeviceLockSimulated event specification.
  * ID: c5fc596a-ef49-43f0-8370-cdc099a413d1
  */
-export function trackDeviceLockSimulatedSpec(deviceLockSimulated: DeviceLockSimulated & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackDeviceLockSimulatedSpec(deviceLockSimulated: DeviceLockSimulated & ContextsOrTimestamp<UserCreditProfile | LoanContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: 'c5fc596a-ef49-43f0-8370-cdc099a413d1',
-        version: 0,
         name: 'device_lock_simulated',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(deviceLockSimulated.context)
@@ -553,19 +662,19 @@ export function trackDeviceLockSimulatedSpec(deviceLockSimulated: DeviceLockSimu
         context,
     };
 
-    trackDeviceLockSimulated<Record<string, unknown> | EventSpecification>(modifiedDeviceLockSimulated, trackers);
+    trackDeviceLockSimulated<UserCreditProfile | LoanContext | EventSpecification>(modifiedDeviceLockSimulated, trackers);
 }
 /**
  * Tracks a CreditApplicationStarted event specification.
  * ID: d105dd67-7df8-47fe-834b-6f998c23924a
  */
-export function trackCreditApplicationStartedSpec(creditApplicationStarted: CreditApplicationStarted & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackCreditApplicationStartedSpec(creditApplicationStarted: CreditApplicationStarted & ContextsOrTimestamp<UserCreditProfile | DeviceContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: 'd105dd67-7df8-47fe-834b-6f998c23924a',
-        version: 0,
         name: 'credit_application_started',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(creditApplicationStarted.context)
@@ -577,19 +686,19 @@ export function trackCreditApplicationStartedSpec(creditApplicationStarted: Cred
         context,
     };
 
-    trackCreditApplicationStarted<Record<string, unknown> | EventSpecification>(modifiedCreditApplicationStarted, trackers);
+    trackCreditApplicationStarted<UserCreditProfile | DeviceContext | EventSpecification>(modifiedCreditApplicationStarted, trackers);
 }
 /**
  * Tracks a CreditApplicationSubmitted event specification.
  * ID: fbeb2eb4-013a-4457-8c25-221d211fc9e8
  */
-export function trackCreditApplicationSubmittedSpec(creditApplicationSubmitted: CreditApplicationSubmitted & ContextsOrTimestamp, trackers?: string[]){
-    const eventSpecificationContext = createEventSpecification({
+export function trackCreditApplicationSubmittedSpec(creditApplicationSubmitted: CreditApplicationSubmitted & ContextsOrTimestamp<UserCreditProfile | DeviceContext>, trackers?: string[]){
+    const eventSpecificationContext: SelfDescribingJson<EventSpecification> = createEventSpecification({ 
         id: 'fbeb2eb4-013a-4457-8c25-221d211fc9e8',
-        version: 0,
         name: 'credit_application_submitted',
         data_product_id: '97bcedb4-b7da-401c-8b6d-1fa89829c8ad',
-        data_product_name: 'Leo&#x27;s Pay by Plow'
+        data_product_name: 'Leo&#x27;s Pay by Plow',
+        data_product_domain: ''
     });
 
     const context = Array.isArray(creditApplicationSubmitted.context)
@@ -601,7 +710,7 @@ export function trackCreditApplicationSubmittedSpec(creditApplicationSubmitted: 
         context,
     };
 
-    trackCreditApplicationSubmitted<Record<string, unknown> | EventSpecification>(modifiedCreditApplicationSubmitted, trackers);
+    trackCreditApplicationSubmitted<UserCreditProfile | DeviceContext | EventSpecification>(modifiedCreditApplicationSubmitted, trackers);
 }
 
 
